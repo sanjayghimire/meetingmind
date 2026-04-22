@@ -2,8 +2,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
-from app.ingestion.pipeline import IngestionPipeline
-from app.rag.chain import RAGChain
 
 
 app = FastAPI(
@@ -20,8 +18,6 @@ app.add_middleware(
 )
 
 
-# ── Request shapes ────────────────────────────────────────────
-
 class IngestRequest(BaseModel):
     workspace_id: str
     source_id: str
@@ -33,10 +29,8 @@ class IngestRequest(BaseModel):
 class QueryRequest(BaseModel):
     workspace_id: str
     question: str
-    top_k: Optional[int] = 5
+    top_k: int = 5
 
-
-# ── Endpoints ─────────────────────────────────────────────────
 
 @app.get("/api/v1/health")
 def health():
@@ -46,6 +40,7 @@ def health():
 @app.post("/api/v1/ingest")
 def ingest(req: IngestRequest):
     try:
+        from app.ingestion.pipeline import IngestionPipeline
         pipeline = IngestionPipeline(workspace_id=req.workspace_id)
         count = pipeline.ingest(
             source_id=req.source_id,
@@ -65,6 +60,7 @@ def ingest(req: IngestRequest):
 @app.post("/api/v1/query")
 def query(req: QueryRequest):
     try:
+        from app.rag.chain import RAGChain
         chain = RAGChain(workspace_id=req.workspace_id)
         result = chain.query(req.question, top_k=req.top_k)
         return {
@@ -84,6 +80,7 @@ def query(req: QueryRequest):
 
 @app.get("/api/v1/stats/{workspace_id}")
 def stats(workspace_id: str):
+    from app.ingestion.pipeline import IngestionPipeline
     pipeline = IngestionPipeline(workspace_id=workspace_id)
     return pipeline.stats
 
