@@ -1,0 +1,8 @@
+.env
+venv/
+chroma_db/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+test_chunker.py
