@@ -31,6 +31,9 @@ class QueryRequest(BaseModel):
     question: str
     top_k: int = 5
 
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "MeetingMind"}
 
 @app.get("/api/v1/health")
 def health():
