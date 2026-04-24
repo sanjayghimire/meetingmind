@@ -15,7 +15,7 @@ with st.sidebar:
     st.title("🧠 MeetingMind")
     st.caption("Your team's AI memory")
     st.divider()
-    
+
     if st.button("Wake up server", use_container_width=True):
         try:
             r = httpx.get(f"{API_URL}/health", timeout=120)
@@ -57,7 +57,7 @@ with st.sidebar:
                         "text": transcript,
                         "source_type": source_type,
                         "title": title or "Untitled",
-                    }, timeout=60)
+                    }, timeout=120)
                     if r.status_code == 200:
                         data = r.json()
                         st.success(
@@ -110,7 +110,7 @@ if prompt := st.chat_input("What did we decide about the launch date?"):
                     "workspace_id": workspace_id,
                     "question": prompt,
                     "top_k": 5,
-                }, timeout=60)
+                }, timeout=120)
 
                 if r.status_code == 200:
                     data = r.json()
