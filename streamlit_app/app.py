@@ -15,6 +15,16 @@ with st.sidebar:
     st.title("🧠 MeetingMind")
     st.caption("Your team's AI memory")
     st.divider()
+    
+    if st.button("Wake up server", use_container_width=True):
+        try:
+            r = httpx.get(f"{API_URL}/health", timeout=120)
+            if r.status_code == 200:
+                st.success("Server is awake!")
+            else:
+                st.error("Server not responding")
+        except Exception as e:
+            st.error(f"Still waking up... wait 30 seconds and try again")
 
     workspace_id = st.text_input(
         "Workspace ID",
