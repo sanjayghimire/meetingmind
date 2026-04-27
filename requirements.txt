@@ -7,7 +7,7 @@ langchain==0.3.1
 langchain-anthropic==0.2.1
 langchain-community==0.3.1
 langchain-chroma==0.1.4
-sentence-transformers==3.1.1
+fastembed==0.3.6
 chromadb==0.5.11
 sqlalchemy==2.0.35
 anthropic==0.37.1
